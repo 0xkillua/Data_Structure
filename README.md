@@ -1,2 +1,2 @@
 # Data_Structure
-Data structure course
+Data structure assignment
