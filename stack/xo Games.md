@@ -61,25 +61,25 @@ void stac::print_all_elements()
 
 /*-----------------------------------------------check winner -----------------------------------------------------------------*/
 
-	bool check() /* check who is winner */
+bool check() /* check who is winner */
+{
+	if (((Games[0][0] == 'X' && Games[0][1] == 'X' && Games[0][2] == 'X')) || ((Games[1][0] == 'X' && Games[1][1] == 'X' && Games[1][2] == 'X')) || ((Games[2][0] == 'X' && Games[2][1] == 'X' && Games[2][2] == 'X')) ||
+		((Games[0][0] == 'X' && Games[1][0] == 'X' && Games[2][0] == 'X')) || ((Games[0][1] == 'X' && Games[1][1] == 'X' && Games[2][1] == 'X')) || ((Games[0][2] == 'X' && Games[1][2] == 'X' && Games[2][2] == 'X')) ||
+		((Games[0][0] == 'O' && Games[0][1] == 'O' && Games[0][2] == 'O')) || ((Games[1][0] == 'O' && Games[1][1] == 'O' && Games[1][2] == 'O')) || ((Games[2][0] == 'O' && Games[2][1] == 'O' && Games[2][2] == 'O')) ||
+		((Games[0][0] == 'O' && Games[1][0] == 'O' && Games[2][0] == 'O')) || ((Games[0][1] == 'O' && Games[1][1] == 'O' && Games[2][1] == 'O')) || ((Games[0][2] == 'O' && Games[1][2] == 'O' && Games[2][2] == 'O')) ||
+		((Games[0][0] == 'X' && Games[1][1] == 'X' && Games[2][2] == 'X')) || ((Games[0][2] == 'X' && Games[1][1] == 'X' && Games[2][0] == 'X')) ||
+		((Games[0][0] == 'O' && Games[1][1] == 'O' && Games[2][2] == 'O')) || ((Games[0][2] == 'X' && Games[1][1] == 'X' && Games[2][0] == 'X')))
 	{
-		if (((Games[0][0] == 'X' && Games[0][1] == 'X' && Games[0][2] == 'X')) || ((Games[1][0] == 'X' && Games[1][1] == 'X' && Games[1][2] == 'X')) || ((Games[2][0] == 'X' && Games[2][1] == 'X' && Games[2][2] == 'X')) ||
-			((Games[0][0] == 'X' && Games[1][0] == 'X' && Games[2][0] == 'X')) || ((Games[0][1] == 'X' && Games[1][1] == 'X' && Games[2][1] == 'X')) || ((Games[0][2] == 'X' && Games[1][2] == 'X' && Games[2][2] == 'X')) ||
-			((Games[0][0] == 'O' && Games[0][1] == 'O' && Games[0][2] == 'O')) || ((Games[1][0] == 'O' && Games[1][1] == 'O' && Games[1][2] == 'O')) || ((Games[2][0] == 'O' && Games[2][1] == 'O' && Games[2][2] == 'O')) ||
-			((Games[0][0] == 'O' && Games[1][0] == 'O' && Games[2][0] == 'O')) || ((Games[0][1] == 'O' && Games[1][1] == 'O' && Games[2][1] == 'O')) || ((Games[0][2] == 'O' && Games[1][2] == 'O' && Games[2][2] == 'O')) ||
-			((Games[0][0] == 'X' && Games[1][1] == 'X' && Games[2][2] == 'X')) || ((Games[0][2] == 'X' && Games[1][1] == 'X' && Games[2][0] == 'X')) ||
-			((Games[0][0] == 'O' && Games[1][1] == 'O' && Games[2][2] == 'O')) || ((Games[0][2] == 'X' && Games[1][1] == 'X' && Games[2][0] == 'X')))
-		{
-			return 1;
-		}
-		return 0;
+		return 1;
 	}
+	return 0;
+}
 /*-------------------------------------------------------------------------------------------------------------------------*/
 void Drow()
 {
 	system("cls");
 
-	for (int row= 0; row < 3; row++)
+	for (int row = 0; row < 3; row++)
 	{
 		cout << "| ";
 		for (int colum = 0; colum < 3; colum++)
@@ -101,7 +101,7 @@ void Drow()
 		cout << "congratlation , you win" << endl;
 	}
 
-	
+
 }
 /*-----------------------------------------------------main---------------------------------------------------------------------------*/
 int main()
@@ -119,7 +119,7 @@ int main()
 
 	/*----------------continos play  while -----------------------------------------------*/
 	while (!(check()))
-  {
+	{
 
 		start = 1;
 		while (start == 1)
@@ -129,19 +129,27 @@ int main()
 			if (choice == 1) {
 				cout << "please enter row and col to put  " << name1 << " : ";
 				cin >> row >> colom;
-				if (Games[row][colom] == 'X' || Games[row][colom] == 'O')
+				if (row < 3 && colom < 3)
 				{
-					cout << "Invalid position" << endl;
-					start = 1;
+
+
+					if (Games[row][colom] == 'X' || Games[row][colom] == 'O')
+					{
+						cout << "Invalid position" << endl;
+						start = 1;
+					}
+					else
+					{
+						n1.push(row);
+						n1.push(colom);
+						Games[row][colom] = 'X';
+						start = 0;
+					}
 				}
 				else
 				{
-					n1.push(row);
-					n1.push(colom);
-					Games[row][colom] = 'X';
-					start = 0;
+					cout << "Invalid position \n";
 				}
-				break;
 			}
 
 			else if (choice == 2)
@@ -158,28 +166,37 @@ int main()
 					start = 1;
 				}
 			}
-			else if (choice == 3)
+			else if (choice == 3) /*redo-------------------------*/
 			{
-				if (Games[row1][colom1] == 'X' || Games[row1][colom1] == 'O')
+				// it is three case do redo to previous game
+				if (!((row1 == 0 || row1 == 1 || row1 == 2) && (colom1 == 0 || colom1 == 1 || colom1 == 2))) 
 				{
-					cout << "Invalid position" << endl;
-					start = 1;
+					start = n1.pop();
 				}
 				else
 				{
-					n1.push(row1);
-					n1.push(colom1);
-					Games[row1][colom1] = 'X';
-					start = 1;
+					if (Games[row1][colom1] == 'X' || Games[row1][colom1] == 'O')             //check if position is empty or no
+					{
+						cout << "error" << endl;
+						start = 1;
+					}
+					else
+					{
+						n1.push(row1);
+						n1.push(colom1);
+						Games[row1][colom1] = 'X';
+						start = 1;
+						Drow();
+					}
 				}
-				break;
 			}
-			else {
+			else
+			{ 
+				cout << "Invalid input \n";
 				start = 1;
-				cout << "Invalid input" << endl;
 			}
 		}
-	
+
 		system("cls");
 		Drow();
 		if (check())
@@ -188,16 +205,18 @@ int main()
 			return 0;
 		}
 		start = 1;
-	/*-------------------------------------------------------------------------------------------------------------------------------*/
+		/*-------------------------------------------------------------------------------------------------------------------------------*/
 		while (start == 1)
 		{
 			cout << name2 << " : Enter   1-  posetion   2-undo    3- redo : ";
 			cin >> choice;
-			switch (choice)
-			{
-				if (choice == 1) {
-					cout << "please enter row and col to put ‘" << name2 << " : ";
-					cin >> row >> colom;
+
+			if (choice == 1) {
+				cout << "please enter row and col to put ‘" << name2 << " : ";
+				cin >> row >> colom;
+				if (row < 3 && colom < 3)
+				{
+
 					if (Games[row][colom] == 'X' || Games[row][colom] == 'O')
 					{
 						cout << "error" << endl;
@@ -210,45 +229,59 @@ int main()
 						Games[row][colom] = 'O';
 						start = 0;
 					}
+				}
+				else
+				{
+					cout << "Invalid position" << endl;
+				}
 
-					break;
-				}
-				else if (choice == 2)
+			}
+			else if (choice == 2)
+			{
+				if (n2.is_empty())
 				{
-					if (n2.is_empty())
-					{
-						start = n2.pop();
-					}
-					else
-					{
-						colom2 = n2.pop();
-						row2 = n2.pop();
-						Games[row2][colom2] = '-';
-						start = 1;
-					}
-					break;
+					start = n2.pop();
 				}
-				else if (choice == 3)
+				else
 				{
-					if (Games[row2][colom2] == 'X' || Games[row2][colom2] == 'O')
+					colom2 = n2.pop();
+					row2 = n2.pop();
+					Games[row2][colom2] = '-';
+					start = 1;
+				}
+
+			}
+			else if (choice == 3) /*redo-------------------------*/
+			{
+				// it is three case do redo to previous game
+				if (!((row1 == 0 || row1 == 1 || row1 == 2) && (colom1 == 0 || colom1 == 1 || colom1 == 2))) 
+				{
+					start = n1.pop();
+				}
+				else
+				{
+					if (Games[row1][colom1] == 'X' || Games[row1][colom1] == 'O')             //check if position is empty or no
 					{
 						cout << "error" << endl;
 						start = 1;
 					}
 					else
 					{
-						n2.push(row2);
-						n2.push(colom2);
-						Games[row2][colom2] = 'O';
+						n1.push(row1);
+						n1.push(colom1);
+						Games[row1][colom1] = 'o';
 						start = 1;
+						Drow();
 					}
-					break;
-				}
-				else {
-					start = 1;
-					cout << "nvalid input" << endl;
 				}
 			}
+			else
+			
+            { 
+				cout << "Invalid input \n"; 
+				start = 1;
+			}
+
 		}
 		system("cls");
 		Drow();
@@ -257,10 +290,12 @@ int main()
 
 			return 0;
 		}
-	} 
-		return 0;
+	}
+	return 0;
 }
-	
+
+
+
 	
 ```
 
