@@ -3,7 +3,6 @@
 ```c++
 #include<bits/stdc++.h>
 #include<windows.h>
-#define size 3
 #define max_size 30
 using namespace std;
 char Games[3][3];
